@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import MultipartMessages from '@utils/multipart';
 import { readUDH } from '@utils/gsm';
 
+//TODO validate user credentials
 const checkAsyncUserPass = async (system_id, password) => {
   return Promise.resolve(true);
 };
@@ -55,7 +56,6 @@ class Handlers {
     if (pdu.short_message.udh) {
       const [header, ...rest] = pdu.short_message.udh;
       const udh = readUDH(header);
-      console.log(udh);
       const result = MultipartMessages.put(pdu, pdu.short_message.message, udh);
       if (!result) return;
 
@@ -67,7 +67,6 @@ class Handlers {
       };
       const messageId = await saveAsyncSms(sms);
       pdus.forEach((unhandledPdu) => {
-        console.log(unhandledPdu);
         session.send(unhandledPdu.response({ message_id: messageId }));
       });
     } else {

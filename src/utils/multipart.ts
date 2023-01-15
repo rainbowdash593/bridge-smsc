@@ -33,8 +33,6 @@ class MultipartMessages {
     item.parts.push({ message, part: udh.part });
     item.pdus.push(pdu);
 
-    console.log(item);
-
     if (item.length === item.parts.length) {
       this.storage.delete(udh.uniq);
       return [this.concatenateMessage(item), item.pdus];
